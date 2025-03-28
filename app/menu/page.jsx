@@ -6,10 +6,22 @@ import { X } from "lucide-react";
 
 export default function Menu() {
   const menuItems = [
-    "GRAM KÜLÇE ALTIN",
-    "ZİYNET ALTIN",
-    "HESABA ALTIN HAVALE",
-    "HESAPTAN FİZİKİ ALTINA",
+    {
+      title: "GRAM KÜLÇE ALTIN",
+      href: "/kulce-altin",
+    },
+    {
+      title: "ZİYNET ALTIN",
+      href: "/",
+    },
+    {
+      title: "HESABA ALTIN HAVALE",
+      href: "/",
+    },
+    {
+      title: "HESAPTAN FİZİKİ ALTINA",
+      href: "/",
+    },
   ];
 
   return (
@@ -35,11 +47,11 @@ export default function Menu() {
       <div className="flex flex-col mt-16">
         {menuItems.map((item, index) => (
           <div key={index}>
-            <button className="w-full text-left">
+            <Link href={item.href}>
               <h1 className="text-white font-sans text-xl p-4 hover:bg-blue-900 transition-colors">
-                {item}
+                {item.title}
               </h1>
-            </button>
+            </Link>
             <div className="px-4">
               <Separator className="bg-blue-400 h-0.5" />
             </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 import {
   Breadcrumb,
@@ -12,23 +14,73 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function KulceAltin() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products?category=kulce-altin");
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Ürünler yüklenirken hata oluştu:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
-    <div>
+    <div className="p-4">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
+              <Link className=" font-bold" href="/">
+                Ana Sayfa
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/kulce-altin">Kulce Altin</Link>
+              <Link className="font-bold" href="/kulce-altin">
+                Gram Külçe Altın
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-0 mt-6">
+        {products.map((product) => (
+          <div key={product._id} className="rounded-lg p-4 text-center">
+            <Link
+              href={`/product/${product.name.toLowerCase().replace(/ /g, "-")}`}
+            >
+              <div className="relative h-40 md:h-48 lg:h-56 w-full mb-4 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+                <Image
+                  src={`/images/${product.purl}`}
+                  alt={product.name}
+                  fill
+                  style={{ borderRadius: "0.75rem" }}
+                  className="object-contain"
+                />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+              <p className="text-blue-900 font-bold mb-2">
+                Ağırlık: {product.weight} gr
+              </p>
+            </Link>
+            <Link
+              href={`/product/${product.name.toLowerCase().replace(/ /g, "-")}`}
+            >
+              <button className="bg-white text-blue-900 border-gray-300 p-1 border-2 w-full rounded-sm hover:bg-blue-50 transition-colors">
+                Sepete Ekle
+              </button>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
