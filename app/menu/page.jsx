@@ -12,7 +12,7 @@ export default function Menu() {
     },
     {
       title: "ZİYNET ALTIN",
-      href: "/",
+      href: "/ziynet",
     },
     {
       title: "HESABA ALTIN HAVALE",

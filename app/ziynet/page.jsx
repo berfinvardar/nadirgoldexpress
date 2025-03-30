@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export default function KulceAltin() {
+export default function ZiynetAltin() {
   const [products, setProducts] = useState([]);
   const [price, setPrice] = useState(null);
 
@@ -20,7 +20,7 @@ export default function KulceAltin() {
     const fetchData = async () => {
       try {
         const [productsResponse, priceResponse] = await Promise.all([
-          fetch("/api/products?category=kulce-altin"),
+          fetch("/api/products?category=ziynet"),
           fetch("/api/price")
         ]);
 
@@ -51,8 +51,8 @@ export default function KulceAltin() {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link className="font-bold" href="/kulce-altin">
-                Gram Külçe Altın
+              <Link className="font-bold" href="/ziynet">
+                Ziynet Altın
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

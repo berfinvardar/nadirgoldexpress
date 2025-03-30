@@ -5,9 +5,12 @@ import logo from "@/public/logo.svg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { useCart } from "@/context/CartContext";
+
 export default function Navbar() {
   const [position, setPosition] = useState(0);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { cart } = useCart();
   const duyuruMetni =
     "Türkiye'nin En Hızlı Altın Alışveriş Sitesi - nadirgoldexpress.com | 1 saat içinde kapıya özel kurye | Şimdi Sipariş Verin..";
 
@@ -22,6 +25,8 @@ export default function Navbar() {
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
+  const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <>
@@ -38,8 +43,8 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="sticky top-0 bg-white z-40">
-        <div className="flex items-center justify-between px-4 pt-4">
+      <div className="sticky top-4 max-h-22 bg-white z-40 shadow-sm">
+        <div className="flex items-center justify-between px-4 py-2 container mx-auto">
           <div className="flex items-center gap-4">
             <Link href="/menu">
               <Menu className="text-blue-900 cursor-pointer" />
@@ -60,14 +65,19 @@ export default function Navbar() {
                 onClick={toggleProfile}
               />
             </div>
-            <Link href="/sepet">
+            <Link href="/sepet" className="relative">
               <ShoppingCart className="text-blue-900 ml-4" />
+              {totalItemsInCart > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItemsInCart}
+                </span>
+              )}
             </Link>
           </div>
         </div>
 
         {isProfileOpen && (
-          <div className="absolute right-0 left-0 mt-2 bg-white shadow-lg z-50 ">
+          <div className="absolute right-0 left-0 top-full bg-white shadow-lg z-50 border-t">
             <div className="flex flex-col py-2 container mx-auto px-4">
               <Link
                 href="/hesap/giris"
