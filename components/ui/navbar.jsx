@@ -60,7 +60,9 @@ export default function Navbar() {
                 onClick={toggleProfile}
               />
             </div>
-            <ShoppingCart className="text-blue-900 ml-4" />
+            <Link href="/sepet">
+              <ShoppingCart className="text-blue-900 ml-4" />
+            </Link>
           </div>
         </div>
 

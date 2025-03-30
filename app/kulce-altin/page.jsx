@@ -9,25 +9,32 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
 export default function KulceAltin() {
   const [products, setProducts] = useState([]);
+  const [price, setPrice] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("/api/products?category=kulce-altin");
-        const data = await response.json();
-        setProducts(data);
+        const [productsResponse, priceResponse] = await Promise.all([
+          fetch("/api/products?category=kulce-altin"),
+          fetch("/api/price")
+        ]);
+
+        const productsData = await productsResponse.json();
+        const priceData = await priceResponse.json();
+
+        setProducts(productsData);
+        setPrice(priceData.price);
       } catch (error) {
-        console.error("Ürünler yüklenirken hata oluştu:", error);
+        console.error("Veri yüklenirken hata oluştu:", error);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   return (
@@ -36,7 +43,7 @@ export default function KulceAltin() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link className=" font-bold" href="/">
+              <Link className="font-bold" href="/">
                 Ana Sayfa
               </Link>
             </BreadcrumbLink>
@@ -67,8 +74,11 @@ export default function KulceAltin() {
                 />
               </div>
               <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-              <p className="text-blue-900 font-bold mb-2">
-                Ağırlık: {product.weight} gr
+              <p className="text-blue-900 font-bold mb-2 text-xl mt-4">
+                {price ? `${(price * product.weight).toLocaleString('tr-TR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })} TL` : 'Yükleniyor...'}
               </p>
             </Link>
             <Link
