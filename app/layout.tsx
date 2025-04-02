@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavbarWrapper from "@/components/ui/navbar-wrapper";
 import FooterWrapper from "@/components/ui/footer-wrapper";
-import { CartProvider } from '@/context/CartContext'; // CartProvider'ı import et
-
+import { CartProvider } from '@/context/CartContext';
+import Image from "next/image";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,9 +31,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CartProvider>
-        <NavbarWrapper />
-        {children}
-        <FooterWrapper />
+          <div className="md:hidden">
+            <NavbarWrapper />
+            {children}
+            <FooterWrapper />
+          </div>
+          <div className="hidden md:flex bg-blue-950 items-center justify-center h-screen">
+            <div className="text-center flex flex-col items-center justify-center">
+              <Image src="/logo.svg" alt="Nadir Gold Express" width={200} height={200} />
+              <h1 className="text-3xl text-orange-300 font-bold mb-4">Şimdilik sadece mobil cihazlarda hizmet vermekteyiz.</h1>
+            </div>
+          </div>
         </CartProvider>
       </body>
     </html>

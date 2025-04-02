@@ -102,8 +102,8 @@ export default function SepetSayfasi() {
               </div>
               {/* Kargo, İndirim vb. eklenebilir */}
               <div className="flex justify-between text-gray-600">
-                <span>Kargo:</span>
-                <span className="font-medium">Hesaplanacak</span>
+                <span>Kurye Ücreti:</span>
+                <span className="font-medium">Ücretsiz</span>
               </div>
             </div>
             <div className="border-t pt-4 flex justify-between items-center">
