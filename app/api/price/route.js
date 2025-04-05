@@ -11,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ error: "Fiyat bulunamadı" }, { status: 404 });
     }
 
-    return NextResponse.json({ price: price.price });
+    return NextResponse.json(price);
   } catch (error) {
     console.error("Fiyat getirme hatası:", error);
     return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });

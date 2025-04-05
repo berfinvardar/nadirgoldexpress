@@ -5,6 +5,8 @@ import NavbarWrapper from "@/components/ui/navbar-wrapper";
 import FooterWrapper from "@/components/ui/footer-wrapper";
 import { CartProvider } from '@/context/CartContext';
 import Image from "next/image";
+import ChatwootWidget from "@/components/ui/ChatwootWidget";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -35,6 +37,7 @@ export default function RootLayout({
             <NavbarWrapper />
             {children}
             <FooterWrapper />
+            <ChatwootWidget />
           </div>
           <div className="hidden md:flex bg-blue-950 items-center justify-center h-screen">
             <div className="text-center flex flex-col items-center justify-center">

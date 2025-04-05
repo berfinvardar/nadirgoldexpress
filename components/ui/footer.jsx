@@ -26,28 +26,23 @@ export default function Footer() {
           <div className="space-y-2">
             <h2 className="font-bold mb-4">KATEGORİLER</h2>
             <Link
-              href="/gram-kulce-altin"
+              href="/kulce-altin"
               className="block hover:text-orange-300"
             >
               Gram Külçe Altın
             </Link>
-            <Link
-              href="/gram-kulce-gumus"
-              className="block hover:text-orange-300"
-            >
-              Gram Külçe Gümüş
-            </Link>
-            <Link href="/ziynet-altin" className="block hover:text-orange-300">
+           
+            <Link href="/ziynet" className="block hover:text-orange-300">
               Ziynet Altın
             </Link>
             <Link
-              href="/hesaba-altin-havale"
+              href="/altin-havale"
               className="block hover:text-orange-300"
             >
               Hesaba Altın Havale
             </Link>
             <Link
-              href="/hesaptan-fiziki-altina"
+              href="/fiziki-altin"
               className="block hover:text-orange-300"
             >
               Hesaptan Fiziki Altına
@@ -58,20 +53,20 @@ export default function Footer() {
           <div className="space-y-2">
             <h2 className="font-bold mb-4">MÜŞTERİ HİZMETLERİ</h2>
             <p>Online Mağaza</p>
-            <p>0 212 527 94 99</p>
-            <p>destek@nadirgold.com</p>
+            <p>0 212 527 44 79</p>
+            <p>destek@nadirgoldexpress.com</p>
           </div>
 
           {/* Dördüncü Sütun - Hesabım */}
           <div className="space-y-2">
             <h2 className="font-bold mb-4">HESABIM</h2>
             <Link
-              href="/uyelik-bilgilerim"
+              href="/hesap/giris"
               className="block hover:text-orange-300"
             >
               Üyelik Bilgilerim
             </Link>
-            <Link href="/siparislerim" className="block hover:text-orange-300">
+            <Link href="/iletisim" className="block hover:text-orange-300">
               Siparişlerim
             </Link>
           </div>

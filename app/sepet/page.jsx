@@ -4,7 +4,7 @@ import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2 } from "lucide-react"; // Çöp kutusu ikonu
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react"; // Modal kapatma ikonu için
 
@@ -18,13 +18,35 @@ export default function SepetSayfasi() {
     deliveryCity: "",
     deliveryDistrict: "",
     deliveryAddress: "",
+    paymentMethod: "havale", // Varsayılan ödeme yöntemi
   });
   const [orderId, setOrderId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [usdRate, setUsdRate] = useState(39.22); // Varsayılan değer
   const router = useRouter();
 
+  // Kur bilgisini veritabanından çekme
+  useEffect(() => {
+    const fetchUsdRate = async () => {
+      try {
+        const response = await fetch('/api/price');
+        const data = await response.json();
+        if (data.price && data.price.usdt) {
+          setUsdRate(Number(data.price.usdt));
+        }
+      } catch (error) {
+        console.error("Kur bilgisi çekilemedi:", error);
+      }
+    };
+    
+    fetchUsdRate();
+  }, []);
+  
   // Ara Toplam Hesaplama
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  
+  // USDT miktarı hesaplama
+  const usdtAmount = (subtotal / (Number(usdRate) || 1)).toFixed(2);
 
   // Form değişikliklerini izleme
   const handleInputChange = (e) => {
@@ -297,6 +319,34 @@ export default function SepetSayfasi() {
                     ></textarea>
                   </div>
                   
+                  <div className="mt-4">
+                    <label className="block text-gray-700 mb-2">Ödeme Yöntemi</label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="havale"
+                          checked={orderData.paymentMethod === "havale"}
+                          onChange={handleInputChange}
+                          className="mr-2"
+                        />
+                        Banka Havalesi
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="usdt"
+                          checked={orderData.paymentMethod === "usdt"}
+                          onChange={handleInputChange}
+                          className="mr-2"
+                        />
+                        USDT TRC20
+                      </label>
+                    </div>
+                  </div>
+                  
                   <div className="pt-4 border-t mt-6">
                     <button
                       type="submit"
@@ -335,13 +385,30 @@ export default function SepetSayfasi() {
                   
                   <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
                     <h3 className="font-semibold text-lg mb-2 text-blue-900">Ödeme Bilgileri</h3>
-                    <p className="mb-2"><span className="font-medium">Banka:</span> Türkiye İş Bankası</p>
-                    <p className="mb-2"><span className="font-medium">Hesap Sahibi:</span> Şirket Adı</p>
-                    <p className="mb-2 font-medium">IBAN:</p>
-                    <p className="bg-white p-2 border rounded-md select-all mb-4">TR12 3456 7890 1234 5678 9012 34</p>
-                    <p className="text-sm text-gray-600">
-                      * Herhangi bir gecikme olmaması için lütfen dekontunuzu kaydediniz.
-                    </p>
+                    
+                    {orderData.paymentMethod === "havale" ? (
+                      <>
+                        <p className="mb-2"><span className="font-medium">Banka:</span>ING BANKASI</p>
+                        <p className="mb-2"><span className="font-medium">Hesap Sahibi:</span>CAN BERŞAN DEMİR</p>
+                        <p className="mb-2 font-medium">IBAN:</p>
+                        <p className="bg-white p-2 border rounded-md select-all mb-4">TR56 0009 9037 2225 5200 1000 01</p>
+                        <p className="text-sm text-gray-600">
+                          * Herhangi bir gecikme olmaması için lütfen dekontunuzu kaydediniz.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="mb-2"><span className="font-medium">USDT (TRC20) TRON Cüzdan Adresi:</span></p>
+                        <p className="bg-white p-2 border rounded-md select-all mb-4">TZGwSatxWz8XCRb5o4q1VFXTayVRMFt38V</p>
+                        <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200 mb-4">
+                          <p className="font-medium text-yellow-800">Ödeme Tutarı: {usdtAmount} USDT</p>
+                          <p className="text-sm text-yellow-700 mt-1">1 USD = {Number(usdRate).toFixed(2)} TL kuru baz alınmıştır.</p>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          * Lütfen tam olarak belirtilen miktarı gönderiniz ve işlem hash'ini kaydediniz.
+                        </p>
+                      </>
+                    )}
                   </div>
                   
                   <div className="flex gap-4 pt-4">
